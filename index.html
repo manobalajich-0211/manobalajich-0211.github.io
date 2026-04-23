@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mano Balaji Cheepurupalli — Senior Data Scientist</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0b;--bg2:#111113;--bg3:#1a1a1e;--bg4:#222228;
+  --text:#e8e6e3;--text2:#9a9898;--text3:#6a6868;
+  --accent:#00d4aa;--accent2:#00b894;--accent3:#00f5c4;
+  --gold:#f4c542;--blue:#4a90d9;
+  --card:rgba(255,255,255,0.03);--border:rgba(255,255,255,0.06);
+  --glow:0 0 60px rgba(0,212,170,0.08);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent);color:var(--bg)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+
+/* LOADER */
+.loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .8s,visibility .8s}
+.loader.hide{opacity:0;visibility:hidden}
+.loader-inner{display:flex;gap:8px}
+.loader-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);animation:loaderBounce .6s ease-in-out infinite alternate}
+.loader-dot:nth-child(2){animation-delay:.2s}
+.loader-dot:nth-child(3){animation-delay:.4s}
+@keyframes loaderBounce{to{transform:translateY(-20px);opacity:.3}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 4vw;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,11,0.7);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:transform .4s}
+nav.scrolled{box-shadow:0 4px 30px rgba(0,0,0,.4)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:.85rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;position:relative;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--accent)!important;color:var(--bg)!important;padding:10px 24px;border-radius:6px;font-weight:600;transition:transform .2s,box-shadow .3s!important}
+.nav-cta::after{display:none!important}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,212,170,.3)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:101}
+.hamburger span{width:24px;height:2px;background:var(--text);transition:.3s}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:0 8vw;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%}
+.hero-content{z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:50px;background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.15);font-size:.8rem;color:var(--accent);font-weight:500;margin-bottom:2rem;animation:fadeUp .8s ease .5s both}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,5vw,4.5rem);font-weight:900;line-height:1.05;margin-bottom:1.5rem;animation:fadeUp .8s ease .7s both}
+.hero h1 .gradient{background:linear-gradient(135deg,var(--accent),var(--accent3),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% auto;animation:shimmer 4s linear infinite}
+@keyframes shimmer{to{background-position:200% center}}
+.hero-sub{font-size:1.15rem;color:var(--text2);line-height:1.7;max-width:520px;margin-bottom:2.5rem;animation:fadeUp .8s ease .9s both}
+.hero-stats{display:flex;gap:3rem;margin-bottom:2.5rem;animation:fadeUp .8s ease 1.1s both}
+.stat-item h3{font-size:2rem;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace}
+.stat-item p{font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px}
+.hero-btns{display:flex;gap:1rem;animation:fadeUp .8s ease 1.3s both}
+.btn-primary{padding:14px 36px;background:var(--accent);color:var(--bg);border:none;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .3s;font-family:'Outfit',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(0,212,170,.25)}
+.btn-secondary{padding:14px 36px;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:.95rem;font-weight:500;cursor:pointer;transition:all .3s;font-family:'Outfit',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+
+/* HERO VISUAL */
+.hero-visual{position:relative;display:flex;justify-content:center;align-items:center;animation:fadeUp 1s ease 1s both}
+.profile-container{position:relative;width:380px;height:380px}
+.profile-ring{position:absolute;inset:-15px;border-radius:50%;border:2px solid transparent;border-top-color:var(--accent);border-right-color:var(--accent3);animation:spin 8s linear infinite}
+.profile-ring2{position:absolute;inset:-30px;border-radius:50%;border:1px solid transparent;border-bottom-color:rgba(0,212,170,.2);animation:spin 12s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.profile-img-wrap{width:100%;height:100%;border-radius:50%;overflow:hidden;background:var(--bg3);border:3px solid var(--bg4);position:relative;cursor:pointer;transition:transform .4s}
+.profile-img-wrap:hover{transform:scale(1.03)}
+.profile-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.profile-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--text3);transition:all .3s}
+.profile-placeholder svg{width:48px;height:48px;opacity:.4}
+.profile-placeholder span{font-size:.8rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.profile-img-wrap:hover .profile-placeholder{color:var(--accent)}
+.profile-img-wrap:hover .profile-placeholder svg{opacity:.7}
+#photoUpload{display:none}
+.float-badge{position:absolute;padding:10px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;font-size:.8rem;font-weight:500;display:flex;align-items:center;gap:8px;box-shadow:var(--glow);animation:float 4s ease-in-out infinite}
+.float-badge.b1{top:10%;right:-20px;animation-delay:0s}
+.float-badge.b2{bottom:15%;left:-30px;animation-delay:1.5s}
+.float-badge.b3{top:50%;right:-40px;animation-delay:3s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.float-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700}
+
+/* BG EFFECTS */
+.hero-bg-grad{position:absolute;top:-30%;right:-20%;width:700px;height:700px;background:radial-gradient(circle,rgba(0,212,170,.06) 0%,transparent 70%);pointer-events:none}
+.hero-bg-grad2{position:absolute;bottom:-20%;left:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(74,144,217,.04) 0%,transparent 70%);pointer-events:none}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+/* SECTIONS */
+section{padding:8rem 8vw;position:relative}
+.section-label{font-size:.75rem;text-transform:uppercase;letter-spacing:3px;color:var(--accent);font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:12px}
+.section-label::before{content:'';width:30px;height:1px;background:var(--accent)}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:800;margin-bottom:1rem;line-height:1.15}
+.section-desc{color:var(--text2);font-size:1.05rem;max-width:600px;line-height:1.7;margin-bottom:3rem}
+
+/* REVEAL ANIMATION */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .8s ease,transform .8s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.about-text p{color:var(--text2);line-height:1.8;margin-bottom:1.5rem;font-size:1.02rem}
+.about-highlights{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.highlight-card{padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px;transition:all .4s}
+.highlight-card:hover{border-color:rgba(0,212,170,.2);transform:translateY(-4px);box-shadow:var(--glow)}
+.highlight-card h4{font-size:2rem;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace}
+.highlight-card p{font-size:.8rem;color:var(--text2);margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+
+/* SKILLS */
+.skills-section{background:var(--bg2)}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.skill-card{padding:2rem;background:var(--bg);border:1px solid var(--border);border-radius:16px;transition:all .5s;position:relative;overflow:hidden}
+.skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent3));transform:scaleX(0);transition:transform .5s;transform-origin:left}
+.skill-card:hover::before{transform:scaleX(1)}
+.skill-card:hover{border-color:rgba(0,212,170,.15);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.skill-icon{width:48px;height:48px;border-radius:12px;background:rgba(0,212,170,.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;font-size:1.3rem}
+.skill-card h3{font-size:1.1rem;font-weight:600;margin-bottom:.8rem}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px}
+.skill-tag{padding:5px 12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;font-size:.72rem;color:var(--text2);font-family:'JetBrains Mono',monospace;transition:all .3s}
+.skill-card:hover .skill-tag{border-color:rgba(0,212,170,.15);color:var(--text)}
+
+/* EXPERIENCE */
+.timeline{position:relative;max-width:900px}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--border),var(--border))}
+.timeline-item{padding-left:3rem;padding-bottom:4rem;position:relative}
+.timeline-item:last-child{padding-bottom:0}
+.timeline-dot{position:absolute;left:-7px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--accent);transition:all .3s;z-index:2}
+.timeline-item:hover .timeline-dot{background:var(--accent);box-shadow:0 0 20px rgba(0,212,170,.4)}
+.timeline-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem}
+.timeline-company{font-size:1.3rem;font-weight:700}
+.timeline-role{color:var(--accent);font-weight:500;font-size:.95rem}
+.timeline-date{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text3);padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:6px}
+.timeline-project{font-size:.85rem;color:var(--text3);font-style:italic;margin-bottom:1rem}
+.timeline-desc{color:var(--text2);line-height:1.7;font-size:.95rem;margin-bottom:1.2rem}
+.timeline-techs{display:flex;flex-wrap:wrap;gap:6px}
+.timeline-tech{padding:4px 10px;font-size:.7rem;font-family:'JetBrains Mono',monospace;background:rgba(0,212,170,.06);border:1px solid rgba(0,212,170,.1);border-radius:4px;color:var(--accent)}
+.timeline-bullets{list-style:none;margin-bottom:1.2rem}
+.timeline-bullets li{position:relative;padding-left:1.2rem;color:var(--text2);font-size:.9rem;line-height:1.7;margin-bottom:.5rem}
+.timeline-bullets li::before{content:'›';position:absolute;left:0;color:var(--accent);font-weight:700}
+
+/* EDUCATION */
+.edu-card{padding:2.5rem;background:var(--card);border:1px solid var(--border);border-radius:16px;max-width:500px;transition:all .4s}
+.edu-card:hover{border-color:rgba(0,212,170,.2);box-shadow:var(--glow)}
+.edu-card h3{font-size:1.3rem;font-weight:700;margin-bottom:.5rem}
+.edu-card p{color:var(--text2);font-size:1rem}
+
+/* CONTACT */
+.contact-section{background:var(--bg2)}
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:800px}
+.contact-card{padding:2rem;background:var(--bg);border:1px solid var(--border);border-radius:16px;text-align:center;transition:all .4s;text-decoration:none;color:var(--text);display:block}
+.contact-card:hover{transform:translateY(-6px);border-color:rgba(0,212,170,.2);box-shadow:0 15px 40px rgba(0,0,0,.3)}
+.contact-icon{width:52px;height:52px;border-radius:14px;background:rgba(0,212,170,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.4rem}
+.contact-card h4{font-size:.95rem;font-weight:600;margin-bottom:.4rem}
+.contact-card p{color:var(--text2);font-size:.85rem}
+
+/* FOOTER */
+footer{padding:3rem 8vw;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--text3)}
+footer a{color:var(--accent);text-decoration:none}
+
+/* CURSOR GLOW */
+.cursor-glow{position:fixed;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,170,.04) 0%,transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%);transition:opacity .3s}
+
+/* MOBILE MENU */
+.mobile-menu{position:fixed;inset:0;z-index:99;background:rgba(10,10,11,.97);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;opacity:0;visibility:hidden;transition:all .4s}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu a{color:var(--text);text-decoration:none;font-size:1.5rem;font-weight:600;transition:color .3s}
+.mobile-menu a:hover{color:var(--accent)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;text-align:center}
+  .hero-sub{margin-left:auto;margin-right:auto}
+  .hero-stats{justify-content:center}
+  .hero-btns{justify-content:center}
+  .hero-visual{order:-1;margin-bottom:1rem}
+  .profile-container{width:260px;height:260px}
+  .about-grid{grid-template-columns:1fr}
+  .skills-grid{grid-template-columns:1fr 1fr}
+  .contact-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  section{padding:5rem 6vw}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .skills-grid{grid-template-columns:1fr}
+  .hero-stats{flex-direction:column;gap:1.5rem}
+  .hero-btns{flex-direction:column;align-items:center}
+  .timeline-header{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="loader-inner">
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+  </div>
+</div>
+
+<!-- BG Effects -->
+<div class="grid-bg"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- Nav -->
+<nav id="navbar">
+  <div class="nav-logo">MB</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#contact" class="nav-cta">Get in Touch</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#skills" onclick="toggleMenu()">Skills</a>
+  <a href="#experience" onclick="toggleMenu()">Experience</a>
+  <a href="#education" onclick="toggleMenu()">Education</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg-grad"></div>
+  <div class="hero-bg-grad2"></div>
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="hero-badge"><span class="dot"></span> Open to Opportunities</div>
+      <h1>Mano Balaji<br><span class="gradient">Cheepurupalli</span></h1>
+      <p class="hero-sub">Senior Data Scientist specializing in AI/ML solutions across Financial Services, Insurance & Pharma — turning complex data into measurable business impact.</p>
+      <div class="hero-stats">
+        <div class="stat-item"><h3 id="yearsCount">0</h3><p>Years Experience</p></div>
+        <div class="stat-item"><h3>3</h3><p>Industries</p></div>
+        <div class="stat-item"><h3>E2E</h3><p>ML Pipelines</p></div>
+      </div>
+      <div class="hero-btns">
+        <a href="#experience" class="btn-primary">View Experience <span>→</span></a>
+        <a href="#contact" class="btn-secondary">Contact Me</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="profile-container">
+        <div class="profile-ring"></div>
+        <div class="profile-ring2"></div>
+        <div class="profile-img-wrap" onclick="document.getElementById('photoUpload').click()">
+          <div class="profile-placeholder" id="profilePlaceholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z"/></svg>
+            <span>Upload Photo</span>
+          </div>
+          <img id="profileImg" style="display:none" alt="Profile">
+        </div>
+        <input type="file" id="photoUpload" accept="image/*">
+        <div class="float-badge b1"><div class="float-icon" style="background:rgba(0,212,170,.12);color:var(--accent)">AI</div> Machine Learning</div>
+        <div class="float-badge b2"><div class="float-icon" style="background:rgba(74,144,217,.12);color:var(--blue)">☁</div> AWS / Azure</div>
+        <div class="float-badge b3"><div class="float-icon" style="background:rgba(244,197,66,.12);color:var(--gold)">⚡</div> MLOps</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="section-label">About Me</div>
+      <h2 class="section-title">Driving Business Impact<br>Through AI & Data</h2>
+      <div class="about-text">
+        <p>I'm a Senior Data Scientist with 6+ years of experience delivering end-to-end AI/ML solutions that create real, measurable business value. My expertise spans Python, TensorFlow, PyTorch, and scikit-learn, building production-grade machine learning pipelines from data ingestion to deployment at enterprise scale.</p>
+        <p>I specialize in NLP, Computer Vision, Time Series Forecasting, Fraud Detection, and Predictive Analytics — solving high-value problems across Financial Services, Insurance, and Pharmaceuticals. Currently at JPMorgan Chase, I architect scalable ML platforms on AWS using Docker, Kubernetes, and MLOps best practices.</p>
+      </div>
+    </div>
+    <div class="about-highlights reveal" style="transition-delay:.2s">
+      <div class="highlight-card"><h4>6+</h4><p>Years in AI/ML</p></div>
+      <div class="highlight-card"><h4>3</h4><p>Major Industries</p></div>
+      <div class="highlight-card"><h4>E2E</h4><p>Pipeline Expertise</p></div>
+      <div class="highlight-card"><h4>MS</h4><p>Data Science Degree</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-section" id="skills">
+  <div class="reveal">
+    <div class="section-label">Technical Expertise</div>
+    <h2 class="section-title">Skills & Technologies</h2>
+    <p class="section-desc">A comprehensive toolkit spanning machine learning, deep learning, cloud infrastructure, and big data — built through years of enterprise-grade deployments.</p>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal" style="transition-delay:.1s">
+      <div class="skill-icon">🧠</div>
+      <h3>Machine Learning</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">scikit-learn</span><span class="skill-tag">XGBoost</span><span class="skill-tag">LightGBM</span><span class="skill-tag">Random Forest</span><span class="skill-tag">SHAP</span><span class="skill-tag">LIME</span><span class="skill-tag">Feature Engineering</span><span class="skill-tag">Hyperparameter Tuning</span>
+      </div>
+    </div>
+    <div class="skill-card reveal" style="transition-delay:.2s">
+      <div class="skill-icon">🔮</div>
+      <h3>Deep Learning</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">TensorFlow</span><span class="skill-tag">PyTorch</span><span class="skill-tag">Keras</span><span class="skill-tag">Hugging Face</span><span class="skill-tag">CNN</span><span class="skill-tag">LSTM</span><span class="skill-tag">GRU</span><span class="skill-tag">Transfer Learning</span>
+      </div>
+    </div>
+    <div class="skill-card reveal" style="transition-delay:.3s">
+      <div class="skill-icon">💬</div>
+      <h3>NLP & GenAI</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">BERT</span><span class="skill-tag">GPT-4</span><span class="skill-tag">T5</span><span class="skill-tag">RAG</span><span class="skill-tag">LangChain</span><span class="skill-tag">Pinecone</span><span class="skill-tag">spaCy</span><span class="skill-tag">Prompt Engineering</span>
+      </div>
+    </div>
+    <div class="skill-card reveal" style="transition-delay:.4s">
+      <div class="skill-icon">☁️</div>
+      <h3>Cloud & MLOps</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">AWS SageMaker</span><span class="skill-tag">Azure ML</span><span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span><span class="skill-tag">MLflow</span><span class="skill-tag">Kubeflow</span><span class="skill-tag">CI/CD</span><span class="skill-tag">Airflow</span>
+      </div>
+    </div>
+    <div class="skill-card reveal" style="transition-delay:.5s">
+      <div class="skill-icon">⚡</div>
+      <h3>Big Data & Databases</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">PySpark</span><span class="skill-tag">Spark ML</span><span class="skill-tag">Kafka</span><span class="skill-tag">Hadoop</span><span class="skill-tag">PostgreSQL</span><span class="skill-tag">MongoDB</span><span class="skill-tag">Snowflake</span><span class="skill-tag">Redis</span>
+      </div>
+    </div>
+    <div class="skill-card reveal" style="transition-delay:.6s">
+      <div class="skill-icon">📊</div>
+      <h3>Analytics & Visualization</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Tableau</span><span class="skill-tag">Power BI</span><span class="skill-tag">A/B Testing</span><span class="skill-tag">Bayesian Stats</span><span class="skill-tag">Causal Inference</span><span class="skill-tag">Streamlit</span><span class="skill-tag">Experimental Design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="reveal">
+    <div class="section-label">Career Journey</div>
+    <h2 class="section-title">Professional Experience</h2>
+    <p class="section-desc">Building enterprise AI platforms that detect fraud, accelerate drug discovery, and optimize insurance operations.</p>
+  </div>
+  <div class="timeline">
+    <!-- JPMC -->
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-header">
+        <div>
+          <div class="timeline-company">JPMorgan Chase & Co.</div>
+          <div class="timeline-role">Senior Data Scientist — AI/ML</div>
+        </div>
+        <div class="timeline-date">Jan 2025 — Present</div>
+      </div>
+      <div class="timeline-project">Financial Risk Intelligence and Compliance Automation Platform</div>
+      <div class="timeline-desc">Designing and deploying an end-to-end ML platform for fraud detection, AML, credit risk modeling, document intelligence, customer segmentation, and financial forecasting at enterprise scale.</div>
+      <ul class="timeline-bullets">
+        <li>Built advanced fraud detection & AML models using XGBoost, LightGBM, and deep learning, reducing false positives significantly</li>
+        <li>Developed credit risk models predicting PD, LGD, and EAD to support lending portfolio decisions</li>
+        <li>Created NLP pipelines with BERT & GPT-4 for automated contract analysis and SEC filing extraction</li>
+        <li>Deployed production models to AWS SageMaker with Docker, Kubernetes, and automated A/B testing</li>
+        <li>Implemented MLflow for experiment tracking, model registry, and regulatory audit trails</li>
+      </ul>
+      <div class="timeline-techs">
+        <span class="timeline-tech">Python</span><span class="timeline-tech">PyTorch</span><span class="timeline-tech">XGBoost</span><span class="timeline-tech">BERT</span><span class="timeline-tech">AWS SageMaker</span><span class="timeline-tech">Spark</span><span class="timeline-tech">Docker</span><span class="timeline-tech">MLflow</span><span class="timeline-tech">Kafka</span>
+      </div>
+    </div>
+    <!-- USAA -->
+    <div class="timeline-item reveal" style="transition-delay:.2s">
+      <div class="timeline-dot"></div>
+      <div class="timeline-header">
+        <div>
+          <div class="timeline-company">USAA</div>
+          <div class="timeline-role">Data Scientist</div>
+        </div>
+        <div class="timeline-date">Aug 2021 — Dec 2023</div>
+      </div>
+      <div class="timeline-project">Insurance Risk Intelligence and Claims Analytics Platform</div>
+      <div class="timeline-desc">Designed ML platform for insurance fraud detection, customer churn prediction, automated underwriting, claims forecasting, and customer lifetime value modeling on Azure Databricks.</div>
+      <ul class="timeline-bullets">
+        <li>Built insurance fraud detection with ensemble methods analyzing claim patterns and policyholder behavior</li>
+        <li>Developed churn prediction models across auto, home, and life insurance products</li>
+        <li>Implemented automated underwriting models to assess risk and optimize pricing</li>
+        <li>Deployed models via Azure ML with monitoring, drift detection, and retraining workflows</li>
+        <li>Created Power BI dashboards for cross-functional decision-making</li>
+      </ul>
+      <div class="timeline-techs">
+        <span class="timeline-tech">Python</span><span class="timeline-tech">TensorFlow</span><span class="timeline-tech">XGBoost</span><span class="timeline-tech">PySpark</span><span class="timeline-tech">Azure ML</span><span class="timeline-tech">Databricks</span><span class="timeline-tech">Power BI</span><span class="timeline-tech">Docker</span>
+      </div>
+    </div>
+    <!-- Pfizer -->
+    <div class="timeline-item reveal" style="transition-delay:.4s">
+      <div class="timeline-dot"></div>
+      <div class="timeline-header">
+        <div>
+          <div class="timeline-company">Pfizer</div>
+          <div class="timeline-role">Data Scientist</div>
+        </div>
+        <div class="timeline-date">Apr 2019 — Aug 2021</div>
+      </div>
+      <div class="timeline-project">Pharmaceutical AI Platform for Drug Development and Clinical Intelligence</div>
+      <div class="timeline-desc">Built AI/data science platform for drug discovery, clinical trial analytics, adverse event prediction, medical imaging analysis, and manufacturing quality control — all aligned with FDA 21 CFR Part 11.</div>
+      <ul class="timeline-bullets">
+        <li>Developed ML models for drug discovery — compound screening and bioactivity classification using graph neural networks</li>
+        <li>Built clinical trial patient recruitment models analyzing EHR data with NLP</li>
+        <li>Created adverse event prediction using survival analysis and time-to-event modeling</li>
+        <li>Implemented CNN-based medical imaging for tissue analysis and pathology classification</li>
+        <li>Deployed models as REST APIs with Flask & Docker for lab system integration</li>
+      </ul>
+      <div class="timeline-techs">
+        <span class="timeline-tech">Python</span><span class="timeline-tech">TensorFlow</span><span class="timeline-tech">Keras</span><span class="timeline-tech">spaCy</span><span class="timeline-tech">OpenCV</span><span class="timeline-tech">Flask</span><span class="timeline-tech">Docker</span><span class="timeline-tech">Tableau</span><span class="timeline-tech">RDKit</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="skills-section" id="education">
+  <div class="reveal">
+    <div class="section-label">Education</div>
+    <h2 class="section-title">Academic Background</h2>
+  </div>
+  <div class="edu-card reveal" style="transition-delay:.15s">
+    <div style="font-size:1.6rem;margin-bottom:1rem">🎓</div>
+    <h3>Master of Science in Data Science</h3>
+    <p>University of Central Missouri — Warrensburg, MO, USA</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="reveal">
+    <div class="section-label">Let's Connect</div>
+    <h2 class="section-title">Get in Touch</h2>
+    <p class="section-desc">Interested in collaborating on AI/ML projects or discussing data-driven solutions? I'd love to hear from you.</p>
+  </div>
+  <div class="contact-grid reveal" style="transition-delay:.15s">
+    <a href="tel:+15125344704" class="contact-card">
+      <div class="contact-icon">📱</div>
+      <h4>Phone</h4>
+      <p>(512) 534-4704</p>
+    </a>
+    <a href="mailto:manobalajich@gmail.com" class="contact-card">
+      <div class="contact-icon">✉️</div>
+      <h4>Email</h4>
+      <p>manobalajich@gmail.com</p>
+    </a>
+    <a href="https://linkedin.com" target="_blank" class="contact-card">
+      <div class="contact-icon">🔗</div>
+      <h4>LinkedIn</h4>
+      <p>View Profile</p>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Mano Balaji Cheepurupalli. All rights reserved.</span>
+  <span>Built with passion for <a href="#hero">AI & Data</a></span>
+</footer>
+
+<script>
+// Loader
+window.addEventListener('load',()=>{
+  setTimeout(()=>document.getElementById('loader').classList.add('hide'),800);
+});
+
+// Cursor Glow
+const glow=document.getElementById('cursorGlow');
+document.addEventListener('mousemove',e=>{
+  glow.style.left=e.clientX+'px';
+  glow.style.top=e.clientY+'px';
+});
+
+// Nav scroll
+let lastScroll=0;
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('navbar');
+  const st=window.scrollY;
+  if(st>100)nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+  lastScroll=st;
+});
+
+// Mobile menu
+function toggleMenu(){
+  const menu=document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+
+// Photo upload
+document.getElementById('photoUpload').addEventListener('change',function(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const img=document.getElementById('profileImg');
+    img.src=ev.target.result;
+    img.style.display='block';
+    document.getElementById('profilePlaceholder').style.display='none';
+  };
+  reader.readAsDataURL(file);
+});
+
+// Count up animation for years
+function countUp(el,target,duration){
+  let start=0;const step=target/((duration/1000)*60);
+  function update(){
+    start+=step;
+    if(start>=target){el.textContent=target+'+';return}
+    el.textContent=Math.floor(start)+'+';
+    requestAnimationFrame(update);
+  }
+  update();
+}
+setTimeout(()=>countUp(document.getElementById('yearsCount'),6,1500),1200);
+
+// Scroll reveal
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}
+  });
+},{threshold:0.15,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.reveal,.reveal-left').forEach(el=>observer.observe(el));
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    const target=document.querySelector(this.getAttribute('href'));
+    if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+// Parallax on float badges
+window.addEventListener('scroll',()=>{
+  const scrolled=window.scrollY;
+  document.querySelectorAll('.float-badge').forEach((b,i)=>{
+    b.style.transform=`translateY(${Math.sin(scrolled*.003+i)*8}px)`;
+  });
+});
+</script>
+</body>
+</html>
